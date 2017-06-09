@@ -1,13 +1,16 @@
 #include "mesh.h"
 #include "obj_loader.h"
 #include <vector>
+#include <assert.h>
 
+//initialises the mesh with filename (.obj file for the model)
 mesh::mesh(const std::string& fileName)
 {
 	IndexedModel model = OBJModel(fileName).ToIndexedModel();
 	InitMesh(model);
 }
 
+//initialises mesh with vertices, indices and 3D model values (mesh used on model, pos, texCoords and normals)
 mesh::mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
 {
 	IndexedModel model;
@@ -25,11 +28,13 @@ mesh::mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, un
 	InitMesh(model);
 }
 
+//function for destructing the mesh when the game is closed
 mesh::~mesh()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayObject);
 }
 
+//function for initialising the mesh
 void mesh::InitMesh(const IndexedModel& model)
 {
 	m_drawCount = model.indices.size();
@@ -63,14 +68,12 @@ void mesh::InitMesh(const IndexedModel& model)
 	glBindVertexArray(0);
 }
 
-
+//function for drawing the mesh
 void mesh::Draw()
 {
 	glBindVertexArray(m_vertexArrayObject);
 
 	glDrawElements(GL_TRIANGLES, m_drawCount, GL_UNSIGNED_INT, 0);
-
-	//glDrawArrays(GL_TRIANGLES, 0, m_drawCount);
 
 	glBindVertexArray(0);
 }

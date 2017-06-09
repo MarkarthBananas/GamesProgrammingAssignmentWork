@@ -47,4 +47,4 @@ private:
     OBJIndex ParseOBJIndex(const std::string& token, bool* hasUVs, bool* hasNormals);
 };
 
-#endif // OBJ_LOADER_H_INCLUDED
+#endif
